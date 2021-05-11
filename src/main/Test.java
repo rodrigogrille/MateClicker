@@ -1,4 +1,5 @@
 package main;
+
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -18,17 +19,18 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+
 public class Test extends JFrame {
 	float i = 0;
 	float sum = 0;
 	float dollar = 0.00f;
 	private JPanel contentPane;
 
+
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
