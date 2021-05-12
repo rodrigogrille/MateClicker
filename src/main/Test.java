@@ -18,7 +18,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import Mate.Mate;
 
 
 public class Test extends JFrame {
@@ -27,12 +30,14 @@ public class Test extends JFrame {
 	float dollar = 0.00f;
 	private JPanel contentPane;
 	static pbThread pr1;
+	static Mate mateIndia;
 
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		mateIndia = new Mate(0.01f, 3);
 		pr1 = new pbThread();
 		pr1.setI(i);
 		EventQueue.invokeLater(new Runnable() {
@@ -53,7 +58,7 @@ public class Test extends JFrame {
 	public Test() {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 593, 526);
+		setBounds(100, 100, 620, 526);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -68,7 +73,7 @@ public class Test extends JFrame {
 		contentPane.setLayout(null);
 
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(10, 78, 557, 338);
+		layeredPane.setBounds(10, 78, 584, 338);
 		contentPane.add(layeredPane);
 		layeredPane.setLayout(new CardLayout(0, 0));
 
@@ -78,47 +83,31 @@ public class Test extends JFrame {
 		Home.setLayout(null);
 
 		JLabel MateNumber = new JLabel("0.00");
-		MateNumber.setBounds(80, 53, 77, 14);
+		MateNumber.setBounds(10, 34, 77, 14);
 		Home.add(MateNumber);
 
-		JLabel MoneyNumber = new JLabel("0.00");
-		MoneyNumber.setBounds(80, 74, 53, 14);
-		Home.add(MoneyNumber);
-
-
-
-		JButton btnNewButton_1 = new JButton("Sell Mate");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pr1.setI(0);
-				sum = (float) (Float.parseFloat(MateNumber.getText()) * 5);
-				dollar = dollar + sum;
-				BigDecimal value = new BigDecimal(dollar);
-				value = value.setScale(2, RoundingMode.HALF_DOWN);
-				dollar = value.floatValue();
-				MoneyNumber.setText(Float.toString(dollar));
-				MateNumber.setText("0.00");
-			}
-		});
-		btnNewButton_1.setBounds(361, 304, 119, 23);
-		Home.add(btnNewButton_1);
-
 		JLabel lblNewLabel_1 = new JLabel("Mate Kilograms");
-		lblNewLabel_1.setBounds(124, 53, 96, 14);
+		lblNewLabel_1.setBounds(54, 34, 96, 14);
 		Home.add(lblNewLabel_1);
 
-		JLabel lblNewLabel_2 = new JLabel("$");
-		lblNewLabel_2.setBounds(124, 74, 77, 14);
-		Home.add(lblNewLabel_2);
-
 		JProgressBar progressBar = new JProgressBar();
-		progressBar.setBounds(258, 53, 146, 14);
+		progressBar.setBounds(160, 34, 116, 14);
 		Home.add(progressBar);
 
 
 		JPanel Upgrades = new JPanel();
 		Upgrades.setBackground(new Color(107, 142, 35));
 		layeredPane.add(Upgrades, "name_602210083241700");
+		Upgrades.setLayout(null);
+
+		JButton btnNewButton_2 = new JButton("New button");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mateIndia.upgrade(mateIndia.getProduction());
+			}
+		});
+		btnNewButton_2.setBounds(182, 182, 89, 23);
+		Upgrades.add(btnNewButton_2);
 
 		JMenuItem MenuUpgrades = new JMenuItem("Upgrades  ");
 		MenuUpgrades.addActionListener(new ActionListener() {
@@ -146,15 +135,40 @@ public class Test extends JFrame {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
 		lblNewLabel.setBounds(10, 11, 263, 56);
 		contentPane.add(lblNewLabel);
-		JButton btnNewButton = new JButton("Plant & Recolect");
+		JButton btnNewButton = new JButton("Plant & \nRecolect");
+		btnNewButton.setHorizontalAlignment(SwingConstants.LEADING);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pr1 = new pbThread(progressBar, MateNumber, pr1, btnNewButton);
+				pr1 = new pbThread(progressBar, MateNumber, pr1, btnNewButton, mateIndia);
 				pr1.start();
 			}
 		});
-		btnNewButton.setBounds(80, 304, 140, 23);
+		btnNewButton.setBounds(286, 30, 141, 23);
 		Home.add(btnNewButton);
+
+		JButton btnNewButton_1 = new JButton("Sell Mate");
+		btnNewButton_1.setBounds(218, 431, 119, 23);
+		contentPane.add(btnNewButton_1);
+
+		JLabel MoneyNumber = new JLabel("0.00");
+		MoneyNumber.setBounds(10, 440, 53, 14);
+		contentPane.add(MoneyNumber);
+
+		JLabel lblNewLabel_2 = new JLabel("$");
+		lblNewLabel_2.setBounds(54, 440, 77, 14);
+		contentPane.add(lblNewLabel_2);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pr1.setI(0);
+				sum = (float) (Float.parseFloat(MateNumber.getText()) * 1);
+				dollar = dollar + sum;
+				BigDecimal value = new BigDecimal(dollar);
+				value = value.setScale(2, RoundingMode.HALF_DOWN);
+				dollar = value.floatValue();
+				MoneyNumber.setText(Float.toString(dollar));
+				MateNumber.setText("0.00");
+			}
+		});
 
 	}
 }

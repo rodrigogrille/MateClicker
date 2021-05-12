@@ -7,18 +7,22 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
+import Mate.Mate;
+
 public class pbThread extends Thread {
 	JProgressBar pbar;
 	JLabel MateNumber;
 	float i;
 	pbThread pr1;
 	JButton button;
+	Mate mateIndia;
 
-	public pbThread(JProgressBar pbar, JLabel MateNumber, pbThread pr1, JButton button) {
+	public pbThread(JProgressBar pbar, JLabel MateNumber, pbThread pr1, JButton button, Mate mateIndia) {
 		this.pbar = pbar;
 		this.MateNumber = MateNumber;
 		this.pr1 = pr1;
 		this.button = button;
+		this.mateIndia = mateIndia;
 	}
 
 	public pbThread() {
@@ -34,7 +38,7 @@ public class pbThread extends Thread {
 		for (int i = min; i < max; i++) {
 			this.pbar.setValue(i);
 			try {
-				sleep(5);
+				sleep((long) mateIndia.getSpeed());
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -44,7 +48,7 @@ public class pbThread extends Thread {
 //			value = value.setScale(2, RoundingMode.HALF_EVEN);
 //			MateNumber.setText(value + "");
 		}
-		this.i = (float) (pr1.getI() + 0.01f);
+		this.i = (float) (pr1.getI() + mateIndia.getProduction());
 		BigDecimal value = new BigDecimal(i);
 		value = value.setScale(2, RoundingMode.HALF_EVEN);
 		MateNumber.setText(value + "");
