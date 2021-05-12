@@ -100,22 +100,19 @@ public class Test extends JFrame {
 		layeredPane.add(Upgrades, "name_602210083241700");
 		Upgrades.setLayout(null);
 
-		JButton btnNewButton_2 = new JButton("New button");
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mateIndia.upgrade(mateIndia.getProduction());
-			}
-		});
-		btnNewButton_2.setBounds(182, 182, 89, 23);
-		Upgrades.add(btnNewButton_2);
+		JLabel infoLabel = new JLabel("");
+		infoLabel.setBounds(10, 34, 564, 14);
+		Upgrades.add(infoLabel);
 
-		JMenuItem MenuUpgrades = new JMenuItem("Upgrades  ");
+		JMenuItem MenuUpgrades = new JMenuItem("Info");
 		MenuUpgrades.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layeredPane.removeAll();
 				layeredPane.add(Upgrades);
 				layeredPane.repaint();
 				layeredPane.revalidate();
+				infoLabel.setText("The MateIndia" + " production is "
+						+ Float.toString(mateIndia.getProduction()) + " KG per click");
 			}
 		});
 

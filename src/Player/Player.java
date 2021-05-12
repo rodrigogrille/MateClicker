@@ -1,6 +1,12 @@
 package Player;
 
+import java.util.ArrayList;
+
+import Mate.Mate;
 public class Player {
-	float mate = 0;
-	float dollar = 0;
+	ArrayList<Mate> mate;
+
+	public Player() {
+		mate = new ArrayList<Mate>();
+	}
 }
