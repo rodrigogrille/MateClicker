@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,6 +23,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import Mate.Mate;
+import Player.Player;
 
 
 public class Test extends JFrame {
@@ -31,13 +33,24 @@ public class Test extends JFrame {
 	private JPanel contentPane;
 	static pbThread pr1;
 	static Mate mateIndia;
+	static Mate matePeru;
+	static Player player;
+	static ArrayList<Mate> mate;
+	static ArrayList<JLabel> label;
 
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		mateIndia = new Mate(0.01f, 3);
+		label = new ArrayList<JLabel>();
+		mate = new ArrayList<Mate>();
+		mateIndia = new Mate(0.01f, 3, "Mate India");
+		matePeru = new Mate(0.05f, 3, "Mate Peru");
+		mate.add(mateIndia);
+		mate.add(matePeru);
+		player = new Player();
+		player.setMate(mate);
 		pr1 = new pbThread();
 		pr1.setI(i);
 		EventQueue.invokeLater(new Runnable() {
@@ -86,11 +99,13 @@ public class Test extends JFrame {
 		MateNumber.setBounds(10, 34, 77, 14);
 		Home.add(MateNumber);
 
-		JLabel lblNewLabel_1 = new JLabel("Mate Kilograms");
+		JLabel lblNewLabel_1 = new JLabel("Mate India KG");
 		lblNewLabel_1.setBounds(54, 34, 96, 14);
 		Home.add(lblNewLabel_1);
 
 		JProgressBar progressBar = new JProgressBar();
+		progressBar.setForeground(new Color(169, 169, 169));
+		progressBar.setToolTipText("");
 		progressBar.setBounds(160, 34, 116, 14);
 		Home.add(progressBar);
 
@@ -100,19 +115,37 @@ public class Test extends JFrame {
 		layeredPane.add(Upgrades, "name_602210083241700");
 		Upgrades.setLayout(null);
 
-		JLabel infoLabel = new JLabel("");
-		infoLabel.setBounds(10, 34, 564, 14);
-		Upgrades.add(infoLabel);
+		JLabel infoLabel0 = new JLabel("");
+		infoLabel0.setBounds(10, 34, 564, 14);
+		Upgrades.add(infoLabel0);
+
+
+		JLabel infoLabel1 = new JLabel("");
+		infoLabel1.setBounds(10, 59, 564, 14);
+		Upgrades.add(infoLabel1);
+
+		JLabel infoLabel2 = new JLabel("");
+		infoLabel2.setBounds(10, 84, 564, 14);
+		Upgrades.add(infoLabel2);
 
 		JMenuItem MenuUpgrades = new JMenuItem("Info");
 		MenuUpgrades.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int i = 0;
+				label.add(infoLabel0);
+				label.add(infoLabel1);
+				label.add(infoLabel2);
 				layeredPane.removeAll();
 				layeredPane.add(Upgrades);
 				layeredPane.repaint();
 				layeredPane.revalidate();
-				infoLabel.setText("The MateIndia" + " production is "
-						+ Float.toString(mateIndia.getProduction()) + " KG per click");
+				for (Mate x : player.getMate()) {
+					label.get(i).setText("The " + x.getName() + " production is "//
+							+ Float.toString(x.getProduction()) + " KG per click");//
+					i++;
+
+				}
+
 			}
 		});
 
@@ -132,7 +165,7 @@ public class Test extends JFrame {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
 		lblNewLabel.setBounds(10, 11, 263, 56);
 		contentPane.add(lblNewLabel);
-		JButton btnNewButton = new JButton("Plant & \nRecolect");
+		JButton btnNewButton = new JButton("Plant & Recolect");
 		btnNewButton.setHorizontalAlignment(SwingConstants.LEADING);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -166,6 +199,7 @@ public class Test extends JFrame {
 				MateNumber.setText("0.00");
 			}
 		});
+
 
 	}
 }
