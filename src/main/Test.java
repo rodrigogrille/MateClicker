@@ -17,20 +17,24 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.border.EmptyBorder;
 
 
 public class Test extends JFrame {
-	float i = 0;
+	static float i = 0;
 	float sum = 0;
 	float dollar = 0.00f;
 	private JPanel contentPane;
+	static pbThread pr1;
 
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		pr1 = new pbThread();
+		pr1.setI(i);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -81,27 +85,12 @@ public class Test extends JFrame {
 		MoneyNumber.setBounds(80, 74, 53, 14);
 		Home.add(MoneyNumber);
 
-		JLabel lblNewLabel = new JLabel("MATE TYCOON");
-		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
-		lblNewLabel.setBounds(10, 11, 263, 56);
-		contentPane.add(lblNewLabel);
-		JButton btnNewButton = new JButton("Plant & Recolect");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				i = (float) (i + 0.01f);
-				BigDecimal value = new BigDecimal(i);
-				value = value.setScale(2, RoundingMode.HALF_EVEN);
-				MateNumber.setText(value + "");
-			}
-		});
-		btnNewButton.setBounds(80, 304, 140, 23);
-		Home.add(btnNewButton);
+
 
 		JButton btnNewButton_1 = new JButton("Sell Mate");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				i = 0;
+				pr1.setI(0);
 				sum = (float) (Float.parseFloat(MateNumber.getText()) * 5);
 				dollar = dollar + sum;
 				BigDecimal value = new BigDecimal(dollar);
@@ -121,6 +110,11 @@ public class Test extends JFrame {
 		JLabel lblNewLabel_2 = new JLabel("$");
 		lblNewLabel_2.setBounds(124, 74, 77, 14);
 		Home.add(lblNewLabel_2);
+
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setBounds(258, 53, 146, 14);
+		Home.add(progressBar);
+
 
 		JPanel Upgrades = new JPanel();
 		Upgrades.setBackground(new Color(107, 142, 35));
@@ -147,6 +141,20 @@ public class Test extends JFrame {
 		});
 		mnNewMenu.add(MenuMain);
 		mnNewMenu.add(MenuUpgrades);
+		JLabel lblNewLabel = new JLabel("MATE TYCOON");
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
+		lblNewLabel.setBounds(10, 11, 263, 56);
+		contentPane.add(lblNewLabel);
+		JButton btnNewButton = new JButton("Plant & Recolect");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pr1 = new pbThread(progressBar, MateNumber, pr1, btnNewButton);
+				pr1.start();
+			}
+		});
+		btnNewButton.setBounds(80, 304, 140, 23);
+		Home.add(btnNewButton);
 
 	}
 }
