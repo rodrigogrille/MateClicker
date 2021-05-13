@@ -11,6 +11,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -19,7 +20,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import Mate.Mate;
@@ -29,7 +29,6 @@ import Player.Player;
 public class Test extends JFrame {
 	static float i = 0;
 	float sum = 0;
-	float dollar = 0.00f;
 	private JPanel contentPane;
 	static pbThread pr1;
 	static Mate mateIndia;
@@ -45,11 +44,12 @@ public class Test extends JFrame {
 	public static void main(String[] args) {
 		label = new ArrayList<JLabel>();
 		mate = new ArrayList<Mate>();
-		mateIndia = new Mate(0.01f, 3, "Mate India");
+		mateIndia = new Mate(0.01f, 1, "Mate India");
 		matePeru = new Mate(0.05f, 3, "Mate Peru");
 		mate.add(mateIndia);
 		mate.add(matePeru);
 		player = new Player();
+		player.setDollar(0);
 		player.setMate(mate);
 		pr1 = new pbThread();
 		pr1.setI(i);
@@ -106,7 +106,7 @@ public class Test extends JFrame {
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setForeground(new Color(169, 169, 169));
 		progressBar.setToolTipText("");
-		progressBar.setBounds(160, 34, 116, 14);
+		progressBar.setBounds(139, 30, 137, 23);
 		Home.add(progressBar);
 
 
@@ -166,7 +166,6 @@ public class Test extends JFrame {
 		lblNewLabel.setBounds(10, 11, 263, 56);
 		contentPane.add(lblNewLabel);
 		JButton btnNewButton = new JButton("Plant & Recolect");
-		btnNewButton.setHorizontalAlignment(SwingConstants.LEADING);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pr1 = new pbThread(progressBar, MateNumber, pr1, btnNewButton, mateIndia);
@@ -175,6 +174,24 @@ public class Test extends JFrame {
 		});
 		btnNewButton.setBounds(286, 30, 141, 23);
 		Home.add(btnNewButton);
+
+		JButton upgradeButton = new JButton("Upgrade");
+		upgradeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Upgrade dialog = new Upgrade();
+					dialog.dollar(player.getDollar(), mateIndia, player);
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+					dialog.setBounds(getBounds());
+
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		upgradeButton.setBounds(437, 30, 137, 23);
+		Home.add(upgradeButton);
 
 		JButton btnNewButton_1 = new JButton("Sell Mate");
 		btnNewButton_1.setBounds(218, 431, 119, 23);
@@ -191,11 +208,11 @@ public class Test extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				pr1.setI(0);
 				sum = (float) (Float.parseFloat(MateNumber.getText()) * 1);
-				dollar = dollar + sum;
-				BigDecimal value = new BigDecimal(dollar);
+				player.setDollar(player.getDollar() + sum);
+				BigDecimal value = new BigDecimal(player.getDollar());
 				value = value.setScale(2, RoundingMode.HALF_DOWN);
-				dollar = value.floatValue();
-				MoneyNumber.setText(Float.toString(dollar));
+				player.setDollar(value.floatValue());
+				MoneyNumber.setText(Float.toString(player.getDollar()));
 				MateNumber.setText("0.00");
 			}
 		});
